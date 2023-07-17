@@ -7,6 +7,5 @@ export default props => (
     <Routes>
         <Route exact path="/" element={<Reader />} />
         <Route path ="/Documenter" element={<Documenter />} />
-        <Route path="*" element={<Reader />} />
     </Routes>
 );
