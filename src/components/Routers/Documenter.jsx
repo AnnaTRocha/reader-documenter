@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const Documenter = () => {
+  const tableRef = useRef(null);
+
   const dados = [
     {
       campo: "Campo1",
@@ -28,10 +32,19 @@ const Documenter = () => {
     }
   ];
 
+  const exportToPDF = () => {
+    const table = tableRef.current;
+    const doc = new jsPDF();
+
+    doc.autoTable({ html: table });
+
+    doc.save('table.pdf');
+  };
+
   return (
     <div>
       <h1>Tabela JSON</h1>
-      <table>
+      <table ref={tableRef}>
         <thead>
           <tr>
             <th>Campo</th>
@@ -51,6 +64,7 @@ const Documenter = () => {
           ))}
         </tbody>
       </table>
+      <button onClick={exportToPDF}>Exportar para PDF</button>
     </div>
   );
 };
