@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
+import { main } from '@popperjs/core';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -52,23 +53,25 @@ function App() {
   };
 
   return (
-    <div>
-      <textarea
-        rows="5"
-        cols="50"
-        value={inputText}
-        onChange={handleInputChange}
-        placeholder="Digite o texto aqui"
-      />
-
+    <body>
       <div>
-        {parsedData.map((field, index) => (
-          <div key={index}>
-            <strong>{field.campo}:</strong> {field.valor}
-          </div>
-        ))}
+        <textarea
+          rows="5"
+          cols="50"
+          value={inputText}
+          onChange={handleInputChange}
+          placeholder="Digite o texto aqui"
+        />
+
+        <div>
+          {parsedData.map((field, index) => (
+            <div key={index}>
+              <strong>{field.campo}:</strong> {field.valor}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </body>
   );
 }
 

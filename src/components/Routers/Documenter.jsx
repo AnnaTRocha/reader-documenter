@@ -1,3 +1,4 @@
+import './css/Documenter.css';
 import React, { useRef } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -42,30 +43,32 @@ const Documenter = () => {
   };
 
   return (
-    <div>
-      <h1>Tabela JSON</h1>
-      <table ref={tableRef}>
-        <thead>
-          <tr>
-            <th>Campo</th>
-            <th>Número de Caracteres</th>
-            <th>Posição</th>
-            <th>Observação</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dados.map((item, index) => (
-            <tr key={index}>
-              <td>{item.campo}</td>
-              <td>{item.n_caracteres}</td>
-              <td>{item.posicao}</td>
-              <td>{item.observacao}</td>
+    <body>
+      <div>
+        <h1>Tabela JSON</h1>
+        <table class="table" ref={tableRef}>
+          <thead>
+            <tr>
+              <th>Campo</th>
+              <th>Número de Caracteres</th>
+              <th>Posição</th>
+              <th>Observação</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={exportToPDF}>Exportar para PDF</button>
-    </div>
+          </thead>
+          <tbody>
+            {dados.map((item, index) => (
+              <tr key={index}>
+                <td>{item.campo}</td>
+                <td>{item.n_caracteres}</td>
+                <td>{item.posicao}</td>
+                <td>{item.observacao}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className="btn btn-primary" onClick={exportToPDF}>Exportar para PDF</button>
+      </div>
+    </body>
   );
 };
 

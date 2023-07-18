@@ -3,12 +3,16 @@ import React from "react"
 
 export default props => 
     <aside className="menu-area">
-        <nav className="menu">
-            <a href="/">
-                Reader
-            </a>
-            <a href="/Documenter">
-                Documenter
-            </a>
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+            <button class="btn btn-dark" type="button"><a href="/">
+                            Reader
+                        </a>
+                    </button>
+            <button class="btn btn-dark" type="button"><a href="/Documenter">
+                            Documenter
+                        </a>
+                    </button>
+            </form>
         </nav>
     </aside>
