@@ -9,16 +9,26 @@ function App() {
 
   const onDrop = (files) => {
     const formData = new FormData();
-    formData.append('file', files[0]); 
-  
-    axios.post('http://localhost:5000/api/upload', formData)
-    .then((response) => {
-      console.log('Arquivo enviado com sucesso:', response.data);
-    })
-    .catch((error) => {
-      console.error('Erro ao enviar arquivo:', error);
-    });
+    formData.append('file', files[0]);
 
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const text = event.target.result;
+      setInputText(text);
+
+      handleInputChange(text);
+      
+      axios.post('http://localhost:5000/api/upload', formData)
+        .then((response) => {
+          console.log('Arquivo enviado com sucesso:', response.data);
+        })
+        .catch((error) => {
+          console.error('Erro ao enviar arquivo:', error);
+        });
+    };
+
+    reader.readAsText(files[0]);
   };  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
@@ -52,10 +62,7 @@ function App() {
     ]
   };
 
-  const handleInputChange = (event) => {
-    const text = event.target.value;
-    setInputText(text);
-
+  const handleInputChange = (text) => {
     const parsedFields = _.map(jsonData.camposRegistro01, (field) => {
       const startPos = parseInt(field.posicao.split('-')[0].trim()) - 1;
       const endPos = parseInt(field.posicao.split('-')[1].trim());
