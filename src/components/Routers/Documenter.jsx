@@ -44,8 +44,7 @@ const Documenter = () => {
 
   return (
     <body>
-      <div>
-        <h1>Tabela JSON</h1>
+      <div className="table">
         <table class="table" ref={tableRef}>
           <thead>
             <tr>

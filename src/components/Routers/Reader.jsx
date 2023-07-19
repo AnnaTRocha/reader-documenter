@@ -1,10 +1,27 @@
 import React, { useState } from 'react';
 import _ from 'lodash';
-import { main } from '@popperjs/core';
+import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [parsedData, setParsedData] = useState([]);
+
+  const onDrop = (files) => {
+    const formData = new FormData();
+    formData.append('file', files[0]); 
+  
+    axios.post('http://localhost:5000/api/upload', formData)
+    .then((response) => {
+      console.log('Arquivo enviado com sucesso:', response.data);
+    })
+    .catch((error) => {
+      console.error('Erro ao enviar arquivo:', error);
+    });
+
+  };  
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const jsonData = {
     camposRegistro01: [
@@ -55,13 +72,10 @@ function App() {
   return (
     <body>
       <div>
-        <textarea
-          rows="5"
-          cols="50"
-          value={inputText}
-          onChange={handleInputChange}
-          placeholder="Digite o texto aqui"
-        />
+        <div {...getRootProps()} style={styles.dropzone}>
+          <input {...getInputProps()} />
+          {isDragActive ? <p>Drop the file here ...</p> : <p>Drag and drop a file here, or click to select a file</p>}
+        </div>
 
         <div>
           {parsedData.map((field, index) => (
@@ -74,5 +88,21 @@ function App() {
     </body>
   );
 }
+
+const styles = {
+  dropzone: {
+    width: '100%',
+    height: '200px',
+    border: '2px dashed #ccc',
+    borderRadius: '4px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: 'pointer',
+    textAlign: 'center',
+    fontSize: '18px',
+    color: '#555',
+  },
+};
 
 export default App;
