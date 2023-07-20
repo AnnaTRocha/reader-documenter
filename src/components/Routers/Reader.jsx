@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import jsonData from '../../Files/roteiroRegistro01.json';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -32,35 +33,6 @@ function App() {
   };  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  const jsonData = {
-    camposRegistro01: [
-      {
-        campo: "Campo1",
-        n_caracteres: 1,
-        posicao: "001 - 001",
-        observacao: "Campo Fixo"
-      },
-      {
-        campo: "Campo2",
-        n_caracteres: 2,
-        posicao: "002 - 006",
-        observacao: "Campo Fixo"
-      },
-      {
-        campo: "Campo3",
-        n_caracteres: 9,
-        posicao: "007 - 020",
-        observacao: "descrição tal"
-      },
-      {
-        campo: "Campo4",
-        n_caracteres: 25,
-        posicao: "021 - 038",
-        observacao: "descrição qualquer"
-      }
-    ]
-  };
 
   const handleInputChange = (text) => {
     const parsedFields = _.map(jsonData.camposRegistro01, (field) => {
