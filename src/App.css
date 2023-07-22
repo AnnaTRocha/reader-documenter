@@ -15,7 +15,7 @@
 }
 
 .app {
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -50,14 +50,19 @@ main {
   height: 80%;
 }
 
-footer.footer {
-  grid-area: footer;
+.footer {
+  
+  height: 20%;
 }
 
 body {
   margin: 0;
   padding: 0;
-  height: 77.8vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.content {
+  flex: 1;
 }

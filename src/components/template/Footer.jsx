@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
 import React from "react"
 
 export default props => 
-<footer class="footer bg-dark text-center text-white">
+<footer class="footer bg-dark text-white mt-auto text-center">
   
   <div class="text-center p-3" style={props.style}>
     Develop by <strong>AnnaTRocha</strong>
