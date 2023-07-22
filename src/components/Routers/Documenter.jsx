@@ -2,7 +2,7 @@ import './css/Documenter.css';
 import React, { useRef } from 'react';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import dados from '../../Files/roteiroRegistro01.json';
+import dados from '../../Files/roteiro-is.json';
 
 const Documenter = () => {
   const tableRef = useRef(null);

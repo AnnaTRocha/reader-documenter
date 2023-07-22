@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import jsonData from '../../Files/roteiroRegistro01.json';
+import jsonData from '../../Files/roteiro-is.json';
 
 function App() {
   const [inputText, setInputText] = useState('');
@@ -35,17 +35,30 @@ function App() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleInputChange = (text) => {
-    const parsedFields = _.map(jsonData.camposRegistro01, (field) => {
+    const parsedFields = [];
+
+    for (const key in jsonData) {
+      if (jsonData.hasOwnProperty(key)) {
+        const campos = jsonData[key];
+
+        const parsedFieldsCurrent = parseCampos(text, campos);
+        parsedFields.push(...parsedFieldsCurrent);
+      }
+    }
+
+    setParsedData(parsedFields);
+  };
+
+  const parseCampos = (text, campos) => {
+    return campos.map((field) => {
       const startPos = parseInt(field.posicao.split('-')[0].trim()) - 1;
       const endPos = parseInt(field.posicao.split('-')[1].trim());
-
+  
       return {
         campo: field.campo,
         valor: text.slice(startPos, endPos).trim()
       };
     });
-
-    setParsedData(parsedFields);
   };
 
   return (
