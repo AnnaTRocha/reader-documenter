@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import _ from 'lodash';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import jsonData from '../../Files/roteiro-is.json';
@@ -36,27 +35,41 @@ function App() {
 
   const handleInputChange = (text) => {
     const parsedFields = [];
-
+    let remainingText = text.trim();
+  
     for (const key in jsonData) {
       if (jsonData.hasOwnProperty(key)) {
         const campos = jsonData[key];
-
-        const parsedFieldsCurrent = parseCampos(text, campos);
-        parsedFields.push(...parsedFieldsCurrent);
+  
+        while (remainingText.length > 0) {
+          const parsedFieldsCurrent = parseCampos(remainingText, campos);
+  
+          if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
+            parsedFields.push(...parsedFieldsCurrent);
+          }
+  
+          const nextLineStart = remainingText.indexOf('\n');
+          if (nextLineStart === -1) {
+            break; 
+          }
+  
+          remainingText = remainingText.slice(nextLineStart + 1).trim();
+        }
       }
     }
-
+  
     setParsedData(parsedFields);
   };
-
+  
   const parseCampos = (text, campos) => {
     return campos.map((field) => {
       const startPos = parseInt(field.posicao.split('-')[0].trim()) - 1;
       const endPos = parseInt(field.posicao.split('-')[1].trim());
   
+      const valor = text.slice(startPos, endPos).trim();
       return {
         campo: field.campo,
-        valor: text.slice(startPos, endPos).trim()
+        valor: valor
       };
     });
   };
