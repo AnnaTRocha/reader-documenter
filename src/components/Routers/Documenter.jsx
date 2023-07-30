@@ -8,10 +8,42 @@ const Documenter = () => {
   const tableRef = useRef(null);
 
   const exportToPDF = () => {
-    const table = tableRef.current;
     const doc = new jsPDF();
 
-    doc.autoTable({ html: table });
+    Object.keys(dados).forEach((roteiroKey) => {
+      const roteiro = dados[roteiroKey];
+
+      doc.text(`${roteiroKey}`, 10, 10);
+
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const tbody = document.createElement("tbody");
+
+      const headRow = document.createElement("tr");
+      ["Campo", "Número de Caracteres", "Posição", "Observação"].forEach((headText) => {
+        const th = document.createElement("th");
+        th.textContent = headText;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+
+      roteiro.forEach((item) => {
+        const bodyRow = document.createElement("tr");
+        ["campo", "n_caracteres", "posicao", "observacao"].forEach((field) => {
+          const td = document.createElement("td");
+          td.textContent = item[field];
+          bodyRow.appendChild(td);
+        });
+        tbody.appendChild(bodyRow);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+
+      doc.autoTable({ html : table});
+
+      doc.addPage();
+    });
 
     doc.save('table.pdf');
   };
@@ -22,7 +54,7 @@ const Documenter = () => {
         const roteiro = dados[roteiroKey];
         return (
           <div key={roteiroKey} className="table">
-            <h2>Roteiro: {roteiroKey}</h2>
+            <h2> {roteiroKey}</h2>
             <table className="table" ref={tableRef}>
               <thead>
                 <tr>
