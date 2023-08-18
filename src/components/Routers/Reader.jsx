@@ -36,25 +36,25 @@ function App() {
   const handleInputChange = (text) => {
     const parsedFields = [];
     let remainingText = text.trim();
-  
+    let header = false;
+
     for (const key in jsonData) {
+
       if (jsonData.hasOwnProperty(key)) {
         const campos = jsonData[key];
-  
-        while (remainingText.length > 0) {
-          const parsedFieldsCurrent = parseCampos(remainingText, campos);
-  
-          if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
-            parsedFields.push(...parsedFieldsCurrent);
-          }
-  
-          const nextLineStart = remainingText.indexOf('\n');
-          if (nextLineStart === -1) {
-            break; 
-          }
-  
-          remainingText = remainingText.slice(nextLineStart + 1).trim();
+
+        const parsedFieldsCurrent = parseCampos(remainingText, campos);
+
+        if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
+          parsedFields.push(...parsedFieldsCurrent);
         }
+
+        const nextLineStart = remainingText.indexOf('\n');
+        if (nextLineStart === -1) {
+          break; 
+        }
+
+        remainingText = remainingText.slice(nextLineStart + 1).trim();
       }
     }
   
@@ -62,11 +62,12 @@ function App() {
   };
   
   const parseCampos = (text, campos) => {
+    let remainingText = text;
+    console.log(text);
     return campos.map((field) => {
-      const startPos = parseInt(field.posicao.split('-')[0].trim()) - 1;
-      const endPos = parseInt(field.posicao.split('-')[1].trim());
-  
-      const valor = text.slice(startPos, endPos).trim();
+      const nCaracteres = field.n_caracteres;
+      const valor = remainingText.slice(0, nCaracteres).trim();
+      remainingText = remainingText.slice(nCaracteres); 
       return {
         campo: field.campo,
         valor: valor
