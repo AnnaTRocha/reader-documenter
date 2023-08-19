@@ -6,6 +6,7 @@ import jsonData from '../../Files/roteiro-is.json';
 function App() {
   const [inputText, setInputText] = useState('');
   const [parsedData, setParsedData] = useState([]);
+  let previousTypeRecord = "";
 
   const onDrop = (files) => {
     const formData = new FormData();
@@ -36,25 +37,38 @@ function App() {
   const handleInputChange = (text) => {
     const parsedFields = [];
     let remainingText = text.trim();
-    let header = false;
 
     for (const key in jsonData) {
 
       if (jsonData.hasOwnProperty(key)) {
         const campos = jsonData[key];
 
-        const parsedFieldsCurrent = parseCampos(remainingText, campos);
+        let typeRecord = remainingText.slice(0, 2);
+        let sameRecord = true;
 
-        if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
-          parsedFields.push(...parsedFieldsCurrent);
-        }
+        while (sameRecord) {
 
-        const nextLineStart = remainingText.indexOf('\n');
-        if (nextLineStart === -1) {
-          break; 
-        }
+          if(!(typeRecord === previousTypeRecord)){
+            sameRecord = false;
+          }
 
-        remainingText = remainingText.slice(nextLineStart + 1).trim();
+          let parsedFieldsCurrent = [];
+          
+          console.log("entrou")
+          parsedFieldsCurrent = parseCampos(remainingText, campos);
+          
+
+          if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
+            parsedFields.push(...parsedFieldsCurrent);
+          }
+
+          const nextLineStart = remainingText.indexOf('\n');
+          if (nextLineStart === -1) {
+            break; 
+          }
+
+          remainingText = remainingText.slice(nextLineStart + 1).trim();
+        } 
       }
     }
   
@@ -63,9 +77,9 @@ function App() {
   
   const parseCampos = (text, campos) => {
     let remainingText = text;
-    console.log(text);
     return campos.map((field) => {
       const nCaracteres = field.n_caracteres;
+      previousTypeRecord = remainingText.slice(0, 2);
       const valor = remainingText.slice(0, nCaracteres).trim();
       remainingText = remainingText.slice(nCaracteres); 
       return {
