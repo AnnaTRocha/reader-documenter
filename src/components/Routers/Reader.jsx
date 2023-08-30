@@ -36,60 +36,31 @@ function App() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const handleInputChange = (text) => {
-    const parsedFields = [];
-    let remainingText = text.trim();
-    let previousCampos = null;
-    let campos = null;
 
-    for (const key in jsonData) {
+    const parsedAlreadyFields = [];
+    const lines = text.split('\n');
 
-      if (jsonData.hasOwnProperty(key)) {
-        
-        let sameRecord = true;
-        
-        console.log("ENTROU ");
-        let repeat = false;
-        
-        campos = jsonData[key];
-        
-        while (sameRecord) {
-          typeRecord = remainingText.slice(0, 2);
+    lines.forEach((line) => {
+      const trimmedLine = line.trim();
+      const typeRecord = trimmedLine.slice(0, 2);
 
-          console.log(typeRecord + " " + previousTypeRecord);
-          if(!(typeRecord === previousTypeRecord)){
-            sameRecord = false;
-            if(repeat){
-              campos = jsonData[key];
-              break;
-            }
-          } else {
-            repeat = true;
-            campos = previousCampos;
-          } 
-
-          let parsedFieldsCurrent = [];
+      if (jsonData.hasOwnProperty(typeRecord)) {
+        const mold = jsonData[typeRecord];
+        let parsedFieldsCurrent = [];
           
-          parsedFieldsCurrent = parseCampos(remainingText, campos);
+        parsedFieldsCurrent = parseFields(trimmedLine, mold);
 
-          if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
-            parsedFields.push(...parsedFieldsCurrent);
-          }
-
-          const nextLineStart = remainingText.indexOf('\n');
-          if (nextLineStart === -1) {
-            break; 
-          }
-
-          remainingText = remainingText.slice(nextLineStart + 1).trim();
-          previousCampos = campos;
-        } 
-        
+        if (parsedFieldsCurrent.some((field) => field.valor.trim().length > 0)) {
+          parsedAlreadyFields.push(...parsedFieldsCurrent);
+        }
+      } else {
+        console.log('Molde não encontrado para:', typeRecord);
       }
-    }
-    setParsedData(parsedFields);
+    });
+    setParsedData(parsedAlreadyFields);
   };
   
-  const parseCampos = (text, campos) => {
+  const parseFields = (text, campos) => {
     let remainingText = text;
     previousTypeRecord = remainingText.slice(0, 2).trim();
     return campos.map((field) => {
