@@ -4,10 +4,17 @@ table {
     margin: auto;
 }
 
-h1 {
+h1, h2 {
     text-align: center;
 }
 
 .btn-primary {
     margin-left: 80%;
 }
+
+.floating-button {
+    position: fixed;
+    bottom: 20px; 
+    right: 20px; 
+    z-index: 1000;
+  }
